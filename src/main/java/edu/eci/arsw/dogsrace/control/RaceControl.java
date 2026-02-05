@@ -39,4 +39,10 @@ public final class RaceControl {
             }
         }
     }
+
+    public synchronized void reset() {
+        paused = false;
+        notifyAll();
+    }
+
 }

@@ -23,7 +23,7 @@ public final class MainCanodromo {
     private static final RaceControl control = new RaceControl();
 
     public static void main(String[] args) {
-        can = new Canodromo(17, 100);
+        can = new Canodromo(10, 20);
         galgos = new Galgo[can.getNumCarriles()];
         can.setVisible(true);
 
@@ -74,5 +74,29 @@ public final class MainCanodromo {
                 System.out.println("Carrera reanudada!");
             }
         });
+
+        can.SetRestartAction(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                // 1. Pausar carrera actual
+                control.pause();
+
+                // 2. Resetear lógica
+                registry.reset();
+                control.reset();
+
+                // 3. Limpiar UI
+                can.restart();
+
+                // 4. Habilitar Start nuevamente
+                can.enableStart(true);
+
+                System.out.println("Carrera reiniciada correctamente");
+            }
+        });
+
+
+
     }
 }

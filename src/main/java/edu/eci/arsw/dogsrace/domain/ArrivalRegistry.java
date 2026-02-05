@@ -29,4 +29,9 @@ public final class ArrivalRegistry {
     }
 
     public record ArrivalSnapshot(int position, String winner) { }
+    public synchronized void reset() {
+        winner = null;
+        nextPosition = 1;
+    }
+
 }

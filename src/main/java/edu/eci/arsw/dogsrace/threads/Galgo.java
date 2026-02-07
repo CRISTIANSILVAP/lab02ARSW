@@ -25,15 +25,16 @@ public class Galgo extends Thread {
     private void corra() throws InterruptedException {
         while (paso < carril.size()) {
             control.awaitIfPaused();
-
             Thread.sleep(100);
+
+            // If Stop was pressed during sleep, honor it before mutating UI/state.
+            control.awaitIfPaused();
             carril.setPasoOn(paso++);
             carril.displayPasos(paso);
 
             if (paso == carril.size()) {
                 carril.finish();
-                var snapshot = registry.registerArrival(getName());
-                System.out.printf("El galgo %s llego en la posicion %d%n", getName(), snapshot.position());
+                registry.registerArrival(getName());
             }
         }
     }

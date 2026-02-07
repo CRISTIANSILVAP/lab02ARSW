@@ -40,9 +40,11 @@ public final class RaceControl {
         }
     }
 
-    public synchronized void reset() {
-        paused = false;
-        notifyAll();
+    public void reset() {
+        synchronized (monitor) {
+            paused = false;
+            monitor.notifyAll();
+        }
     }
 
 }

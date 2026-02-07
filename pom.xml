@@ -60,14 +60,14 @@
                     <limit>
                       <counter>INSTRUCTION</counter>
                       <value>COVEREDRATIO</value>
-                      <minimum>0.70</minimum>
+                      <minimum>0.80</minimum>
                     </limit>
                   </limits>
                 </rule>
               </rules>
               <excludes>
-                <!-- UI classes are hard to unit test in this lab -->
-                <exclude>**/ui/**</exclude>
+                <!-- Orchestrator class is hard to unit test safely in this lab -->
+                <exclude>**/app/**</exclude>
               </excludes>
             </configuration>
           </execution>

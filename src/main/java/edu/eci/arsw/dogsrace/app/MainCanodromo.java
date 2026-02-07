@@ -50,11 +50,15 @@ public final class MainCanodromo {
                     }
 
                     // 3) show results ONLY after all threads finished
+                    var ranking = registry.getRanking();
                     String winner = registry.getWinner();
-                    int total = registry.getNextPosition() - 1;
 
-                    can.winnerDialog(winner, total);
-                    System.out.println("El ganador fue: " + winner);
+                    can.winnerDialog(winner, ranking.size());
+
+                    System.out.println("\n=== Ranking final ===");
+                    for (int pos = 0; pos < ranking.size(); pos++) {
+                        System.out.printf("%d) El Galgo %s%n", pos + 1,ranking.get(pos));
+                    }
                 }, "race-orchestrator").start();
             }
         });

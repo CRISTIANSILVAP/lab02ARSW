@@ -33,6 +33,7 @@ public class Canodromo extends JFrame {
 	private JButton butStart = new JButton("Start");
 	private JButton butStop = new JButton("Stop");
 	private JButton butContinue = new JButton("Continue");
+	private JButton	butRestart = new JButton("Restart");
 	/**
 	 * Constructor
 	 * 
@@ -82,6 +83,7 @@ public class Canodromo extends JFrame {
 		butPanel.add(butStart);
 		butPanel.add(butStop);
 		butPanel.add(butContinue);
+		butPanel.add(butRestart);
 		cont.add(butPanel, BorderLayout.SOUTH);
 
 		this.setSize(butWidht * longPista, butHeight * nCarriles + 400);
@@ -155,8 +157,18 @@ public class Canodromo extends JFrame {
 	public void setContinueAction(ActionListener action){
 		butContinue.addActionListener(action);
 	}
+
+	public void SetRestartAction(ActionListener action){
+		butRestart.addActionListener(action);
+
+	}
 	
 	public void winnerDialog(String winner,int total) {
             JOptionPane.showMessageDialog(null, "El ganador fue:" + winner + " de un total de " + total);
-        }	
+        }
+
+	public void enableStart(boolean enabled) {
+		butStart.setEnabled(enabled);
+	}
+
 }

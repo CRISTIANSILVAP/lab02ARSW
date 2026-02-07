@@ -2,6 +2,7 @@ package edu.eci.arsw.dogsrace.domain;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
@@ -54,5 +55,11 @@ class ArrivalRegistryTest {
 
         assertNotNull(registry.getWinner(), "Winner must be set");
         assertEquals(n + 1, registry.getNextPosition(), "Next position must be n+1");
+
+        List<String> ranking = registry.getRanking();
+        assertEquals(n, ranking.size(), "Ranking size must match number of arrivals");
+        assertTrue(ranking.contains(registry.getWinner()), "Winner must be part of ranking");
+
+        assertThrows(UnsupportedOperationException.class, () -> ranking.add("hack"));
     }
 }

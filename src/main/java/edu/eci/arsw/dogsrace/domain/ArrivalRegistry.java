@@ -6,17 +6,21 @@ import java.util.Objects;
 
 /**
  * Thread-safe arrival registry.
- * Critical section is limited to the position assignment and winner selection.
+ * Uses pluggable ArrivalCounter for evaluating different synchronization strategies.
  */
 public final class ArrivalRegistry {
 
-    private int nextPosition = 1;
     private String winner = null;
     private final List<String> ranking = new ArrayList<>();
+    private final ArrivalCounter counter;
+
+    public ArrivalRegistry(ArrivalCounter counter) {
+        this.counter = Objects.requireNonNull(counter, "counter cannot be null");
+    }
 
     public synchronized ArrivalSnapshot registerArrival(String dogName) {
         Objects.requireNonNull(dogName, "dogName");
-        final int position = nextPosition++;
+        final int position = counter.recordArrival(dogName);
         if (position == 1) {
             winner = dogName;
         }
@@ -26,7 +30,7 @@ public final class ArrivalRegistry {
     }
 
     public synchronized int getNextPosition() {
-        return nextPosition;
+        return counter.getCount() + 1;
     }
 
     public synchronized String getWinner() {
@@ -41,10 +45,19 @@ public final class ArrivalRegistry {
     }
 
     public record ArrivalSnapshot(int position, String winner) { }
+    
     public synchronized void reset() {
         winner = null;
-        nextPosition = 1;
         ranking.clear();
+        counter.reset();
+    }
+
+    public ArrivalCounter.PerformanceMetrics getMetrics() {
+        return counter.getMetrics();
+    }
+
+    public String getStrategyName() {
+        return counter.getStrategyName();
     }
 
 }

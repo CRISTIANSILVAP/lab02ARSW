@@ -99,10 +99,12 @@ public class Carril {
 	}
 
 	/**
-	 * Indica que se ha llegado al final del carril
+	 * Indica que se ha llegado al final del carril con su posición
+	 * @param position la posición de llegada (1 = ganador)
 	 */
-	public void finish() {
-		llegada.setText("!");
+	public void finish(int position) {
+		llegada.setText(String.valueOf(position));
+		llegada.setBackground(Color.YELLOW);
 	}
 
 	public void displayPasos(int n) {

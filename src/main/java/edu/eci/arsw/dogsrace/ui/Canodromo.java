@@ -12,8 +12,9 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 /**
@@ -74,9 +75,11 @@ public class Canodromo extends JFrame {
 
 		panPistas.setBorder(new EmptyBorder(new Insets(5, 0, 5, 0)));
 
-		int butWidht = 8;
-		int butHeight = 20;
-		cont.add(panPistas, BorderLayout.NORTH);
+		// Wrap pistas in a scrollpane for many lanes
+		JScrollPane scrollPane = new JScrollPane(panPistas);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		cont.add(scrollPane, BorderLayout.CENTER);
 
 		JPanel butPanel = new JPanel();
 		butPanel.setLayout(new FlowLayout());
@@ -86,16 +89,25 @@ public class Canodromo extends JFrame {
 		butPanel.add(butRestart);
 		cont.add(butPanel, BorderLayout.SOUTH);
 
-		this.setSize(butWidht * longPista, butHeight * nCarriles + 400);
-
-		// Get the size of the screen
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		// Determine the new location of the window
-		int w = this.getSize().width;
-		int h = this.getSize().height;
-		int x = (dim.width - w) / 2;
-		int y = (dim.height - h) / 2;
-		// Move the window
+		// Calculate ideal size but limit to 90% of screen
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int maxWidth = (int) (screenSize.width * 0.9);
+		int maxHeight = (int) (screenSize.height * 0.9);
+		
+		int butWidht = 8;
+		int butHeight = 20;
+		int idealWidth = butWidht * longPista;
+		int idealHeight = butHeight * nCarriles + 150;
+		
+		// Use smaller of ideal or max dimensions
+		int finalWidth = Math.min(idealWidth, maxWidth);
+		int finalHeight = Math.min(idealHeight, maxHeight);
+		
+		this.setSize(finalWidth, finalHeight);
+		
+		// Center on screen
+		int x = (screenSize.width - finalWidth) / 2;
+		int y = (screenSize.height - finalHeight) / 2;
 		this.setLocation(x, y);
 		this.setTitle("Canodromo");
 
